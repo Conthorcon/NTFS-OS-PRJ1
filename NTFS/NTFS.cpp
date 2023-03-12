@@ -9,6 +9,7 @@ MFTEntryHeader *meh;
 MFTAttributeHeader *mah;
 
 int secPerClus;
+wchar_t headPath[10] = L"\\\\.\\";
 unsigned int byteRead;  //read bytes from ATTRIBUTE HEADER 
 //store entire File Infomation
 FileInfo file;
@@ -17,11 +18,11 @@ vector<FileInfo> files;
 vector<FileInfo> root;
 vector< vector<FileInfo> > preShow;
 vector<FileInfo> curShow;
-
 void NTFS(BYTE sector[],wchar_t driver[])
 {
     showVBR(sector);
 
+    wcscat(headPath,driver);
     readEntry(sector);
     initFileTree();
     
@@ -131,7 +132,7 @@ void readEntry(BYTE sector[])
 
     for(int i = 0; i < 256; i++) // Read 256 entries
     {
-        ReadSectorEx(L"\\\\.\\E:", mbs, sector);
+        ReadSectorEx(headPath, mbs, sector);
 
         mbs += 2;  //next entry (1 entry = 2 sector)
         file.begSector = i*2;
