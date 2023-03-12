@@ -1,0 +1,24 @@
+Các bước thực hiện:
+1.	Xây dựng các struct tương ứng với các nội dung cần đọc
+2.	Xây dựng các hàm hỗ trỡ chuyển đổi dữ liệu (string, int (đảo bit),…)
+3.	Đọc dữ liệu:
+Cách đọc – đọc liên tục các sector, trích xuất thông tin dựa vào offset và kích thước tương ứng, chuyển dãy bit thành các kiểu dữ liệu lưu trữ thông tin.
+a.	Đọc VBR: xác định các trường số sector/cluster, cluster bắt đầu của MFT,… 
+b.	Xác định vị trí MFT: số sector/cluster * cluster bắt đầu MFT * số byte/sector (dùng hàm SetFilePointerEx(fileapi.h) để đặt con trỏ đến vị trí MFT do có kích thước di chuyển lớn 8bytes)
+c.	Đọc các thành phần MFT entry (mỗi entry xem như 1 file/folder):
+i.	MFT header: lấy thông tin offset bắt đầu của attribute
+ii.	MFT attribute: lấy thông tin file từ 3 attribute chính $STANDARD_INFORMATION, $File_Name, $Data.
+*Dùng biến byteRead để xác định vị trí con trỏ file tính từ đầu sector.
+4.	Xây dựng các hàm hiển thị thông tin file/folder (xem thông tin, các lệnh hiển thị,…)
+5.	Test chương trình
+*Các lệnh hiện thị:
+	+ ls: hiển thị tập tin/thư mục gốc
++ gt <id của folder>: xem các file/folder con
++ rt: trở lại đường dẫn trước
++ exit: thoát chương trình
+Các chức năng:
+1.	Đọc thông tin được mô tả trong Partition Boot Sector (Đã hoàn thành)
+2.	Hiển thị cây thư mục gốc (Đã hoàn thành)
+3.	Hiển thị thông tin tệp tin/ thư mục: tên, kích thước (tệp tin), trạng thái, vị trí sector (Đã hoàn thành)
+4.	Cho phép xem nội dung tệp tin phần mở rộng txt (resident + non-resident) (Đã hoàn thành)
+5.	Cho phép hiển thị cây thư mục con (Đã hoàn thành)
